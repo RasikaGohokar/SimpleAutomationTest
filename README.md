@@ -10,7 +10,7 @@ This project's main goal is to validate the end-to-end functionality of a to-do 
 
 Before running the tests, ensure you have the basic to-do application running.
 
-* Clone this repository.
+* Clone this repository where your playwright is configured.
 * Create the following folder structure:
   - app
     - frontend
@@ -75,7 +75,7 @@ The testing scope covers UI and API automation, including positive and negative 
 *  Run the command:
 
 ```bash
-npx playwright test client.spec.ts --headed --project=chromium
+npx playwright test tests/client.spec.ts --headed --project=chromium
 ```
 
 * For checking the reports, run the command:
