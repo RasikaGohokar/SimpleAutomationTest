@@ -75,7 +75,7 @@ The testing scope covers UI and API automation, including positive and negative 
 *  Run the command:
 
 ```bash
-npx playwright test client.spec.ts --headed
+npx playwright test client.spec.ts --headed --project=chromium
 ```
 
 * For checking the reports, run the command:
