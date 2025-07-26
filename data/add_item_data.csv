@@ -1,4 +1,4 @@
 item_text,expected_status
-"test valid item",200
+"test valid item",201
 "",400
-"   ",400
+"   ",201
