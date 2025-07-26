@@ -83,3 +83,11 @@ npx playwright test tests/client.spec.ts --headed --project=chromium
 ```bash
 npx playwright show-report
 ```
+* Execute the postman tests using the postman tool
+* The requests are in folder , so executed testcases by right clicking on folder then click on run and provide the script i.e the testdata and select the request and then click on run.
+* Below are the sample command and the mapping of request to the corresponding test data file
+* <img width="413" height="131" alt="image" src="https://github.com/user-attachments/assets/04173752-c335-4c1b-9a59-ee4e0332a4a2" />
+
+* Only Create new user request is not having parameterize data and the positive and negative request is written separately.
+* Also for add , edit , delete and get item , we need a authtoken which we get on successful login so that is set as environment variable but if expired will have to login again.
+
