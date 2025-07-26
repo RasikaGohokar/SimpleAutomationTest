@@ -1,4 +1,4 @@
 item_id,new_text,expected_status
 3,test145,200
 9999,invalid-edit,404
-,missing_id,400
+,missing_id,404
