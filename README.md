@@ -31,12 +31,12 @@ Before running the tests, ensure you have the basic to-do application running.
 ```
 * Delete the `BasicToDoApp` directory.
 * Navigate to the `app/frontend/` directory.
-* Run the command:
+* Run the command to start the frontend:
 ```bash
 `npm start`
 ```
 * Navigate to the `app/backend/` directory.
-* Run the command:
+* Run the command to start backend:
 ```bash
 `node index.js`
 ```
