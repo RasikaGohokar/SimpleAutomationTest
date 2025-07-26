@@ -18,7 +18,7 @@ Before running the tests, ensure you have the basic to-do application running.
 * Navigate to the `app/frontend/` directory.
 * Run the cpmmand:
 ```bash
-`npx create-react-app .`
+npx create-react-app .
 ```
 * Navigate to the `app/frontend/src/` directory.
 * Replace the `App.js` file with the `App.js` file present in `BasicToDoApp/todo/`.
@@ -26,19 +26,19 @@ Before running the tests, ensure you have the basic to-do application running.
 * Copy and paste the `index.js` file present in `BasicToDoApp/Server/`.
 * Run the commands:
 ```bash
-`npm -init y`
-`npm install express cors jsonwebtoken bcryptjs`
+npm -init y
+npm install express cors jsonwebtoken bcryptjs
 ```
 * Delete the `BasicToDoApp` directory.
 * Navigate to the `app/frontend/` directory.
 * Run the command to start the frontend:
 ```bash
-`npm start`
+npm start
 ```
 * Navigate to the `app/backend/` directory.
 * Run the command to start backend:
 ```bash
-`node index.js`
+node index.js
 ```
 
 ***
