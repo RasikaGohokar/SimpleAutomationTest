@@ -10,7 +10,7 @@ This project's main goal is to validate the end-to-end functionality of a to-do 
 
 Before running the tests, ensure you have the basic to-do application running.
 
-* Clone this repository where your playwright is configured.
+* Clone this repository where your playwright is configured, i.e., directory containing `playwright.config.ts` file.
 * Create the following folder structure:
   - app
     - frontend
@@ -71,7 +71,7 @@ The testing scope covers UI and API automation, including positive and negative 
 ## 🚀 Executing the Tests
 
 *  Store the Env Variables from `.env` file in the Postman Enviornment.
-*  Navigate to the `tests/` directory.
+*  Navigate to the directory where your playwright is configured, i.e., directory containing `playwright.config.ts` file. 
 *  Run the command:
 
 ```bash
