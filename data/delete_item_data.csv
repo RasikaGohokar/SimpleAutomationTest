@@ -1,0 +1,3 @@
+item_id,expectedStatus,expectedMessage
+3,200,Item deleted successfully
+9999,404,Item not found

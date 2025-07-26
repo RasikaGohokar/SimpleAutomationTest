@@ -1,0 +1,6 @@
+username,password,expectedStatus,expectToken
+validuser,correctpass,200,true
+invalid_user,wrong_password,401,false
+existing_user,anotherpass,409,false
+,blankpass,400,false
+Userwithnpass,,400,false
