@@ -1,6 +1,6 @@
 username,password,expectedStatus,expectToken
-validuser,correctpass,200,true
+rasika1,1234,200,true
 invalid_user,wrong_password,401,false
-existing_user,anotherpass,409,false
-,blankpass,400,false
-Userwithnpass,,400,false
+user_1753515939464,anotherpass,401,false
+,blankpass,401,false
+Userwithnpass,,401,false
