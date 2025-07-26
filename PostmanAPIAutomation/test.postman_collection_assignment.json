@@ -1,0 +1,506 @@
+{
+	"info": {
+		"_postman_id": "406f2a3f-70e7-458b-817b-548490ced122",
+		"name": "test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39014971"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is as expected\", function () {\r",
+									"  pm.expect(pm.response.code).to.eql(Number(data.expectedStatus));\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Check if token is expected\r",
+									"if (data.expectToken === 'true') {\r",
+									"  pm.test(\"Token is received\", function () {\r",
+									"    pm.expect(response).to.have.property(\"token\");\r",
+									"  });\r",
+									"\r",
+									"  // Save token to environment for later use\r",
+									"  if (response.token) {\r",
+									"    pm.environment.set(\"authToken\", response.token);\r",
+									"    console.log(\"Token saved to environment:\", response.token);\r",
+									"  }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\"username\":\"{{username}}\",\r\n// \"password\":\"{{password}}\"}\r\n\r\n{\r\n    \"username\":\"rasika1\",\r\n    \"password\":\"1234\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CRUD",
+			"item": [
+				{
+					"name": "edit item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const expectedStatus = parseInt(pm.iterationData.get(\"expected_status\"));\r",
+									"const newText = pm.iterationData.get(\"new_text\");\r",
+									"\r",
+									"pm.test(\"Verify expected status code\", function () {\r",
+									"    pm.response.to.have.status(expectedStatus);\r",
+									"});\r",
+									"\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Verify item text is updated\", function () {\r",
+									"        const jsonData = pm.response.json();\r",
+									"        pm.expect(jsonData).to.have.property(\"text\", newText);\r",
+									"        pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Verify item ID matches the URL\", function () {\r",
+									"        const jsonData = pm.response.json();\r",
+									"        const itemId = parseInt(pm.iterationData.get(\"item_id\"));\r",
+									"        pm.expect(jsonData.id).to.eql(itemId);\r",
+									"    });\r",
+									"} else {\r",
+									"    pm.test(\"Verify error message if applicable\", function () {\r",
+									"        const jsonData = pm.response.json();\r",
+									"        pm.expect(jsonData).to.have.property(\"message\");\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"text\": \"{{new_text}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/items/{{item_id}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"items",
+								"{{item_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify expected status code\", function () {\r",
+									"    const expectedStatus = parseInt(pm.iterationData.get(\"expected_status\"));\r",
+									"    pm.response.to.have.status(expectedStatus);\r",
+									"});\r",
+									"\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Verify item is returned with correct text\", function () {\r",
+									"        const response = pm.response.json();\r",
+									"        pm.expect(response).to.have.property(\"text\", pm.iterationData.get(\"item_text\"));\r",
+									"        pm.expect(response).to.have.property(\"id\");\r",
+									"        pm.expect(response).to.have.property(\"userId\");\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"Current token:\", pm.environment.get(\"authToken\"));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"text\": \"{{item_text}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/items",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code matches\", function () {\r",
+									"    pm.response.to.have.status(Number(data.expectedStatus));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message check\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(data.expectedMessage);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/items/{{item_id}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"items",
+								"{{item_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get data",
+			"item": [
+				{
+					"name": "get item list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"const expectedText = pm.environment.get(\"item_text\");\r",
+									"\r",
+									"const itemFound = responseData.some(item => item.text === expectedText);\r",
+									"\r",
+									"pm.test(`Item with text \"${expectedText}\" exists in response`, function () {\r",
+									"  pm.expect(itemFound).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authtoken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/items",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create new user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.set(\"timestamp\", Date.now());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User created and token received\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    const jsonData = pm.response.json();\r",
+							"\r",
+							"    // Check if token is present in the response\r",
+							"    pm.expect(jsonData.token).to.be.a(\"string\").and.not.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"user_{{timestamp}}\", \"password\": \"test\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/signup",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new user(Negative flow)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should return error message for missing fields\", function () {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.message).to.include(\"Username and password are required\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.set(\"timestamp\", Date.now());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"\", \"password\": \"test\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/signup",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "authToken",
+			"value": ""
+		},
+		{
+			"key": "authtoken",
+			"value": ""
+		}
+	]
+}
